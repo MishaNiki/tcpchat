@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"github.com/MishaNiki/tcpchat/internal/app/tcpchat"
 )
 
 var (
@@ -15,7 +16,11 @@ func init() {
 func main() {
 	flag.Parse()
 
-	
+	config := tcpchat.NewConfig()
 
-	
+	err := config.DecodeJFile(configPath)
+	if err != nil {
+		panic(err)
+	}
+
 }
