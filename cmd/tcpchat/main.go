@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+
 	"github.com/MishaNiki/tcpchat/internal/app/tcpchat"
 )
 
@@ -18,8 +19,13 @@ func main() {
 
 	config := tcpchat.NewConfig()
 
-	err := config.DecodeJFile(configPath)
-	if err != nil {
+	//err := config.DecodeJFile(configPath)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	//fmt.Println(config.BindPort)
+	serv := tcpchat.New(config)
+	if err := serv.Start(); err != nil {
 		panic(err)
 	}
 

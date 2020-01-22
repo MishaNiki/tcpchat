@@ -1,5 +1,11 @@
 package tcpchat
 
+import (
+	"encoding/json"
+	"io"
+	"os"
+)
+
 // ...
 type Config struct {
 	BindPort string `json:"bind_port"`
@@ -8,13 +14,31 @@ type Config struct {
 // ...
 func NewConfig() *Config {
 	return &Config{
-		BindPort: ":8083"
+		BindPort: ":8083",
 	}
 }
 
 // ...
 func (config *Config) DecodeJFile(configPath string) error {
-	// Загрузка из файла
-	
+
+	file, err := os.Open(configPath)
+	if err != nil {
+		return err
+	}
+
+	defer file.Close()
+
+	data := make([]byte, 64)
+	for {
+		_, err := file.Read(data)
+		if err == io.EOF { // если конец файла
+			break // выходим из цикла
+		}
+	}
+	err = json.Unmarshal(data, config)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
