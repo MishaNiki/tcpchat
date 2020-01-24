@@ -19,11 +19,10 @@ func main() {
 
 	config := tcpchat.NewConfig()
 
-	//err := config.DecodeJFile(configPath)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	//fmt.Println(config.BindPort)
+	err := config.DecodeJFile(configPath)
+	if err != nil {
+		panic(err)
+	}
 	serv := tcpchat.New(config)
 	if err := serv.Start(); err != nil {
 		panic(err)

@@ -25,17 +25,19 @@ func (config *Config) DecodeJFile(configPath string) error {
 	if err != nil {
 		return err
 	}
-
 	defer file.Close()
 
 	data := make([]byte, 64)
+
+	var lenBuf int
 	for {
-		_, err := file.Read(data)
-		if err == io.EOF { // если конец файла
-			break // выходим из цикла
+		len, e := file.Read(data)
+		lenBuf += len
+		if e == io.EOF {
+			break
 		}
 	}
-	err = json.Unmarshal(data, config)
+	err = json.Unmarshal(data[:lenBuf], config)
 	if err != nil {
 		return err
 	}
